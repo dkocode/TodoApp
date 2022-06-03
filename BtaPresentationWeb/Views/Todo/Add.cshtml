@@ -1,0 +1,46 @@
+﻿@using BtaApplication.Todo.Services
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+   
+@inject ITodoItemApplicationService TodoItemApplicationService
+
+@model BtaPresentationWeb.Models.Todo.TodoItemAddViewModel
+@{
+    ViewData["Title"] = "TODO Add new";
+
+    var modelState = ViewContext.ViewData.ModelState;
+}
+<div class="text-center">
+    <h1 class="display-4">TODO Add new</h1>
+   
+    <form asp-controller="Todo" asp-action="AddSave" method="post">
+        <div class="row">
+            <div class="col text-end">
+                <a asp-action="Index" asp-controller="Home">Go home</a>
+            </div>
+        </div>
+       @if (!modelState.IsValid)
+       {
+           <div class="alert alert-danger" role="alert">
+               @foreach (var error in modelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage))
+               {
+                   <div>@error</div>
+               }
+           </div>
+       }
+       <div class="row">
+           <div class="col">
+               @Html.TextBoxFor(m => m.Name, new { placeholder = "Name", ariaLabel = "Name", @class = "form-control", autocomplete = "off" })
+               @Html.ValidationMessageFor(m => m.Name)
+           </div>
+           <div class="col">
+               @Html.DropDownListFor(m => m.PriorityId, TodoItemApplicationService.GetTodoPriorityDataSource(), new { @class = "form-select" })
+               @Html.ValidationMessageFor(m => m.PriorityId)
+           </div>
+       </div>
+       <div class="row">
+           <div class="col text-end">
+               <button type="submit" class="btn btn-primary">Save</button>
+           </div>
+       </div>
+    </form>
+</div>

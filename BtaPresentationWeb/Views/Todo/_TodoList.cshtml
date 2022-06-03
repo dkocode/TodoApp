@@ -1,0 +1,14 @@
+﻿@using BtaApplication.Todo.Services
+@model IList<BtaApplication.Todo.Dtos.TodoItemDto>
+
+@inject ITodoItemApplicationService TodoItemApplicationService
+
+<div class="row">
+    <div class="col">
+        <todo-table Items="@TodoItemApplicationService.GetList()"></todo-table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col text-end"><a asp-action="Add" asp-controller="Todo" class="btn btn-primary">Add new</a></div>
+</div>
